@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
-import {createSession} from "./../data/sessionData";
-import {indexUser, createUser} from './../data/userData';
+import {createLogin} from "../data/loginData";
+import {indexPlayer, createPlayer} from '../data/playerData';
 function Login(props) {
     const {option} = props;
     const options = new Object();
@@ -18,7 +18,7 @@ function Login(props) {
     useEffect(() => {
       (
         async ()=>{
-          const data = await indexUser();
+          const data = await indexPlayer();
           if(data.status===200) history.push('');
           else setLogged(false);
         }
@@ -51,7 +51,7 @@ function Login(props) {
     };
 
     const startLogin = async ()=>{
-      const data = await createSession(email, password);
+      const data = await createLogin(email, password);
         if(data.status===401) setStatusMessage("The user doesn't exists or password is not correct");
         else {
           history.push('');
@@ -63,7 +63,7 @@ function Login(props) {
         await startLogin();
       }
       else{
-        const data = await createUser(username, email, password, passwordConfirmation);
+        const data = await createPlayer(username, email, password, passwordConfirmation);
         if(data.status===409){
           let nMessage = "";
           Object.entries(data.errors).forEach((item)=>{
