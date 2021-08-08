@@ -1,5 +1,5 @@
 export const createLogin = async (email, password) => {
-    let dataResponse=null;
+    let dataResponse="";
     const response = await fetch(`https://localhost:44311/api/login`, {
         method: 'POST',
         headers: {
@@ -13,8 +13,7 @@ export const createLogin = async (email, password) => {
           return  data.json();
             })
             .then((loginData)=>{
-              localStorage.setItem('id', loginData.id);
-              localStorage.setItem('token', loginData.remember_token);
+              dataResponse=loginData;
             });
             await response;
             return dataResponse;
@@ -36,4 +35,16 @@ export const createLogin = async (email, password) => {
       return data;
   };
 
-  export default {createLogin, destroyLogin}
+  export const getLogin = async () => {
+    const response = await fetch(`https://localhost:44311/api/login`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = await response;
+      return data;
+  };
+
+  export default {createLogin, destroyLogin, getLogin}

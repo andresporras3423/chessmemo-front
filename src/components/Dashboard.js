@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getConfig } from '../actions/index';
 import { useHistory } from "react-router-dom";
-import {indexPlayer} from '../data/playerData';
+import {getLogin} from '../data/loginData';
 
 function App(props) {
   const {handleGetConfig, total_letters} = props;
@@ -21,7 +21,7 @@ const history = useHistory();
 useEffect(() => {
   (
     async ()=>{
-      const data = await indexPlayer();
+      const data = await getLogin();
       if(data.status!==200) history.push('/login');
       else setLogged(true);
     }

@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
-import {createLogin} from "../data/loginData";
-import {indexPlayer, createPlayer} from '../data/playerData';
+import {createLogin, getLogin} from "../data/loginData";
+import {createPlayer} from '../data/playerData';
 function Login(props) {
     const {option} = props;
     const options = new Object();
@@ -9,7 +9,6 @@ function Login(props) {
     options['login']= {'message': `Don't have an account? go to sign up`, 'link': '/signup'};
     const history = useHistory();
     const [statusMessage, setStatusMessage] = useState('');
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [logged, setLogged] = useState(true)
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -18,7 +17,7 @@ function Login(props) {
     useEffect(() => {
       (
         async ()=>{
-          const data = await indexPlayer();
+          const data = await getLogin();
           if(data.status===200) history.push('');
           else setLogged(false);
         }
@@ -38,8 +37,8 @@ function Login(props) {
     };
 
     const startLogin = async ()=>{
-      const data = await createLogin(email, password);
-        if(data.status===401) setStatusMessage("The user doesn't exists or password is not correct");
+      const response = await createLogin(email, password);
+        if(isNaN(response)) setStatusMessage(response);
         else {
           history.push('');
         }
@@ -49,14 +48,13 @@ function Login(props) {
       if(option==="login"){
         await startLogin();
       }
+      else if (password!=passwordConfirmation){
+        setStatusMessage("password and password confirm must be equals");
+      }
       else{
-        const data = await createPlayer(username, email, password, passwordConfirmation);
-        if(data.status===409){
-          let nMessage = "";
-          Object.entries(data.errors).forEach((item)=>{
-            nMessage+=`${item[0]}: ${item[1]}</br>`;
-          });
-          setStatusMessage(nMessage);
+        const response = await createPlayer(email, password);
+        if(isNaN(response)){
+          setStatusMessage(response);
         } 
         else await startLogin();
       }
