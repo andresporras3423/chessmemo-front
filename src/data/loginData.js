@@ -9,11 +9,15 @@ export const createLogin = async (email, password) => {
         body: JSON.stringify({email: email, password: password}),
       })
       .then((data)=>{
-          dataResponse=data;
           return  data.json();
             })
             .then((loginData)=>{
-              dataResponse=loginData;
+              let listData = loginData.split(",");
+              if(listData.length==2){
+                localStorage.setItem('id', listData[0]);
+                localStorage.setItem('token', listData[1]);
+              }
+              dataResponse=listData[0];
             });
             await response;
             return dataResponse;
@@ -30,8 +34,6 @@ export const createLogin = async (email, password) => {
         },
       });
       const data = await response;
-      localStorage.removeItem('id')
-      localStorage.removeItem('token');
       return data;
   };
 
@@ -40,7 +42,9 @@ export const createLogin = async (email, password) => {
         method: 'GET',
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'id': localStorage.getItem('id'),
+          'token': localStorage.getItem('token')
         },
       });
       const data = await response;

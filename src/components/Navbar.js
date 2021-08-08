@@ -1,5 +1,14 @@
+import {destroyLogin} from "./../data/loginData";
+import { useHistory } from "react-router-dom";
+
 function Navbar(props) {
   const {setPage} = props;
+  const history = useHistory();
+
+  const logout = async ()=>{
+    await destroyLogin();
+    history.push("/login");
+  };
 
   return (
     <div className="myNavbar">
@@ -21,7 +30,10 @@ function Navbar(props) {
       <button onClick={()=>setPage('6')}>Most corrects</button>
       <button onClick={()=>setPage('7')}>Recent errors</button>
       <button onClick={()=>setPage('8')}>Recent corrects</button>
-      </div>
+    </div> 
+    </div>
+    <div className="subnav">
+      <button className="subnavbtn" onClick={()=>logout()}>Exit</button>
     </div>
   </div>
   );
