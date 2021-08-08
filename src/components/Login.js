@@ -24,19 +24,6 @@ function Login(props) {
         }
       )();
       }, []);
-  
-    const name = () => {
-      if (option==="signup") {
-        return (
-          <>
-            <label>Name: </label>
-            <input  className="form-control" type="text" onChange={(e)=>setUsername(e.target.value)}/>
-          </>
-        );
-      }
-  
-      return <></>;
-    };
 
     const confirmPassword = () => {
       if (option==="signup") {
@@ -78,7 +65,6 @@ function Login(props) {
   else return (
     <div className="col-md-12 login-div">
                 <div  className="form-login" >
-                  {name()}
                     <label>Email: </label>
                     <input  className="form-control" type="text" onChange={(e)=>setEmail(e.target.value)} />
                     <label>Password: </label>
@@ -91,7 +77,7 @@ function Login(props) {
                   <pre dangerouslySetInnerHTML={{ __html: statusMessage }}></pre>
                 </div>
     </div>
-  );
+  ); 
 }
 
 export default Login;
