@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, createRef} from 'react';
 import useState from 'react-usestateref';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,6 +21,18 @@ function PlayContent(props) {
   const [position, setPosition, refPosition] = useState(null);
   const inputRef = useRef(null);
   const divRef = useRef(null);
+  const [cells, setCells, refCells] = useState([]);
+
+  const createBoardRefs = ()=>{
+    let tempCells=[];
+    for(let i=0; i<8;i++){
+      tempCells.push([]);
+      for(let j=0; j<8;j++){
+        tempCells[i].push(createRef());
+      }
+    }
+    setCells(tempCells);
+  };
 
   const updateCurrentTime = ()=>{
     if(refPlayingGame.current!==1){
@@ -82,6 +94,7 @@ function PlayContent(props) {
 
   useEffect(()=>{
     const abortController = new AbortController();
+    createBoardRefs();
     question();
     updateCurrentTime();
     return function cleanup() {
@@ -97,6 +110,27 @@ function PlayContent(props) {
           <h4>Total time: {totalTime}</h4>
           <h4>total corrects: {refCorrects.current}/{counterQuestions-1}</h4>
           <h4>How many?: {char}</h4>
+          <div className="board">
+            {
+              refCells.current.map(
+                (row, rowId)=>{
+                  return(
+                    <div className="rowBoard">
+                      {
+                        row.map(
+                          (cell, columnId)=>{
+                            return(
+                              <div className={(rowId+columnId)%2==0 ? 'white-cell' : 'black-cell'} ref={cell}>{rowId} {columnId}</div>
+                            )
+                          }
+                        )
+                      }
+                    </div>
+                  )
+                }
+              )
+            }
+          </div>
           <div>
             <pre dangerouslySetInnerHTML={{ __html: word }}></pre>
           </div>

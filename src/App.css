@@ -111,6 +111,26 @@
   margin-bottom: 5px;
 }
 
+.rowBoard{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  width: 400px;
+  height: 50px;
+}
+
+.cellBoard{
+  width: 50px;
+  height: 50px;
+}
+
+.white-cell{
+  background-color: khaki;
+}
+
+.black-cell{
+  background-color: brown;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
