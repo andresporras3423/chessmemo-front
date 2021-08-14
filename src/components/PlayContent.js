@@ -120,7 +120,9 @@ function PlayContent(props) {
                         row.map(
                           (cell, columnId)=>{
                             return(
-                              <div className={(rowId+columnId)%2==0 ? 'white-cell' : 'black-cell'} ref={cell}>{rowId} {columnId}</div>
+                              <div className={(rowId+columnId)%2==0 ? 'white-cell' : 'black-cell'} ref={cell}>
+                                <img className="cellBoard" src="/assets/black-rook.svg" />
+                                </div>
                             )
                           }
                         )
