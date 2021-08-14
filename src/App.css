@@ -123,6 +123,17 @@
   height: 50px;
 }
 
+.cell-properties{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pieceImage{
+  width: 40px;
+  height: 40px;
+}
+
 .white-cell{
   background-color: khaki;
 }
