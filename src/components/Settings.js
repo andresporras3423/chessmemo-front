@@ -1,25 +1,34 @@
-import {useState } from 'react';
+import {useState, useEffect } from 'react';
 import {updateConfigData} from '../data/configData';
+import {getDifficultyData} from '../data/difficultyData';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getConfig } from '../actions/index';
+import { nanoid } from 'nanoid';
 
 function Settings(props) {
-  const {whitespaces, total_letters, questions, handleGetConfig} = props;
+  const {DifficultyId, questions, handleGetConfig} = props;
+  const [levels, setLevels] = useState([]); 
   const [configData, setConfigData] = useState({
-  'whitespaces': whitespaces,
-  'total_letters': total_letters,
+  'DifficultyId': DifficultyId,
   'questions': questions});
   const [messageStatus, setMessageStatus] = useState(0);
+
+  useEffect(() => {
+    (
+      async ()=>{
+        const difficultyData = await getDifficultyData();
+         setLevels(difficultyData);
+      }
+    )();
+    }, []);
+
   const updateSettings = async ()=>{
-    const answ1 = await updateConfigData('whitespaces', configData['whitespaces']);
-    const answ2 = await updateConfigData('total_letters', configData['total_letters']);
-    const answ3 = await updateConfigData('questions', configData['questions']);
-    if(answ1.status===200 && answ2.status===200 && answ3.status===200) {
+    const answ = await updateConfigData(configData['DifficultyId'], configData['questions']);
+    if(answ.status===200) {
       setMessageStatus(1);
       handleGetConfig({
-        'whitespaces': configData['whitespaces'],
-        'total_letters': configData['total_letters'],
+        'DifficultyId': configData['DifficultyId'],
         'questions': configData['questions'],
       });
     }
@@ -41,13 +50,20 @@ function Settings(props) {
     else if(messageStatus===2) return (<div className="alert alert-danger">an error occurs, data couldn't be saved</div>)
     else return (<></>)
   }
-    return (
+  if(levels.length===0) return <></>
+  else return (
       <div className="settings-parent">
         <div className="settings">
-        <label>whitespaces: </label>
-          <input type="number" min="0" max="4" value={configData['whitespaces']} onChange={(e)=>typeSetting('whitespaces', e.target.value)}></input>
-          <label>total letters:</label>
-          <input type="number" min="8" max="128" value={configData['total_letters']}  onChange={(e)=>typeSetting('total_letters', e.target.value)}></input>
+        <label>Level: </label>
+          <select value={configData['DifficultyId']} onChange={(e)=>typeSetting('DifficultyId', e.target.value)}>
+                    {
+                      levels.map(
+                        (level)=>(
+                          <option key={nanoid()} value={level.id}>{level.difficultyName}</option>
+                      )
+                      )
+                    }
+          </select>
           <label>questions:</label>
           <input type="number" min="3" max="100" value={configData['questions']}  onChange={(e)=>typeSetting('questions', e.target.value)}></input>
           <button className="btn btn-dark" onClick={updateSettings}>Update</button>
@@ -64,22 +80,19 @@ function Settings(props) {
   });
   
   const mapStateToProps = state => ({
-    whitespaces: state.config.whitespaces,
-    total_letters: state.config.total_letters,
+    DifficultyId: state.config.DifficultyId,
     questions: state.config.questions,
     });
   
   Settings.propTypes = {
-    whitespaces: PropTypes.number,
-    total_letters: PropTypes.number,
+    DifficultyId: PropTypes.number,
     questions: PropTypes.number,
     handleGetConfig: PropTypes.func,
   };
   
   Settings.defaultProps = {
-    whitespaces: 0,
-    total_letters: 0,
-    questions: 0,
+    DifficultyId: 0,
+    questions: 10,
     handleGetConfig: null,
   };
   

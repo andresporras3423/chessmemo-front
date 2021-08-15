@@ -4,8 +4,7 @@ import {
   
   export const getConfig = nConfig => ({
     type: GET_CONFIG,
-    whitespaces: nConfig.whitespaces,
-    total_letters: nConfig.total_letters,
+    DifficultyId: nConfig.DifficultyId,
     questions: nConfig.questions,
   });
   

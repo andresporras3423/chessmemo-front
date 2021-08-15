@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import {getLogin} from '../data/loginData';
 
 function App(props) {
-  const {handleGetConfig, total_letters} = props;
+  const {handleGetConfig} = props;
 const [page, setPage] = useState('0');
 const [logged, setLogged]=useState(false);
 const history = useHistory();
@@ -23,19 +23,18 @@ useEffect(() => {
     async ()=>{
       const data = await getLogin();
       if(data.status!==200) history.push('/login');
-      else setLogged(true);
+      else{
+        const data = await getConfigData();
+          handleGetConfig({
+            'DifficultyId': data['DifficultyId'],
+            'questions': data['questions'],
+          });
+          setLogged(true);
+      } 
     }
   )();
   }, []);
 
-useEffect(async () => {
-  const data = await getConfigData();
-  handleGetConfig({
-    'whitespaces': data['whitespaces'],
-    'total_letters': data['total_letters'],
-    'questions': data['questions'],
-  });
-}, []);
 
 const setSelectedPage = ()=>{
   if(page==='0') return (<Instructions/>);
@@ -52,10 +51,6 @@ else return (
   );
 }
 
-const mapStateToProps = state => ({
-  total_letters: state.config.whitespaces,
-  });
-
 const mapDispatchToProps = dispatch => ({
   handleGetConfig: nConfig => {
     dispatch(getConfig(nConfig));
@@ -63,13 +58,11 @@ const mapDispatchToProps = dispatch => ({
 });
 
 App.propTypes = {
-  handleGetConfig: PropTypes.func,
-  total_letters: PropTypes.number,
+  handleGetConfig: PropTypes.func
 };
 
 App.defaultProps = {
-  handleGetConfig: null,
-  total_letters: 0,
+  handleGetConfig: null
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

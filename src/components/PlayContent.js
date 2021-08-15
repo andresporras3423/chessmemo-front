@@ -22,6 +22,20 @@ function PlayContent(props) {
   const inputRef = useRef(null);
   const divRef = useRef(null);
   const [cells, setCells, refCells] = useState([]);
+  const [pieces, setPieces, refPieces] = useState({
+    "bp": "/assets/black-pawn.svg",
+    "bn": "/assets/black-kinght.svg",
+    "bb": "/assets/black-bishop.svg",
+    "br": "/assets/black-rook.svg",
+    "bq": "/assets/black-queen.svg",
+    "bk": "/assets/black-king.svg",
+    "wp": "/assets/white-pawn.svg",
+    "wn": "/assets/white-kinght.svg",
+    "wb": "/assets/white-bishop.svg",
+    "wr": "/assets/white-rook.svg",
+    "wq": "/assets/white-queen.svg",
+    "wk": "/assets/white-king.svg",
+  });
 
   const createBoardRefs = ()=>{
     let tempCells=[];
@@ -121,8 +135,8 @@ function PlayContent(props) {
                           (cell, columnId)=>{
                             return(
                               <div className={'cell-properties '+((rowId+columnId)%2==0 ? 'white-cell' : 'black-cell')} ref={cell}>
-                                <img className="pieceImage" src="/assets/black-rook.svg" />
-                                </div>
+                                <img className="pieceImage" src={pieces["br"]} />
+                              </div>
                             )
                           }
                         )

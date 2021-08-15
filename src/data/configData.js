@@ -1,25 +1,27 @@
 export const getConfigData = async () => {
-  const response = await fetch(`https://lit-shelf-55398.herokuapp.com/config_game/get`, {
+  const response = await fetch(`https://localhost:44311/api/config/`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'id': localStorage.getItem('id'),
+        'token': localStorage.getItem('token'),
       },
     });
     const data = await response.json();
-    const opts = new Object();
-    data.forEach((conf)=>opts[conf.property]=parseInt(conf.val));
-    return opts;
+    return data;
 };
 
-export const updateConfigData = async (property, val) => {
-  const response = await fetch(`https://lit-shelf-55398.herokuapp.com/config_game/update`, {
+export const updateConfigData = async (DifficultyId, questions) => {
+  const response = await fetch(`https://localhost:44311/api/config/`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'id': localStorage.getItem('id'),
+        'token': localStorage.getItem('token'),
       },
-      body: JSON.stringify({property: property, val: val})
+      body: JSON.stringify({Questions: questions, DifficultyId: DifficultyId})
     });
     const data = await response;
     return data;
