@@ -122,7 +122,7 @@ function PlayContent(props) {
     if(refPlayingGame.current===1){
       return (
         <>
-        <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.floor(Math.log2(totalPieces-1))]}</h4>
+        <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.ceil(Math.log2(totalPieces))-2]}</h4>
           <h4>Total time: {totalTime}</h4>
           <h4>total corrects: {refCorrects.current}/{counterQuestions}</h4>
           <div className="board">
