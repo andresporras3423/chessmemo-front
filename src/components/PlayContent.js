@@ -1,21 +1,19 @@
 import {useEffect, useRef, createRef} from 'react';
 import useState from 'react-usestateref';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {saveScore, showPosition} from '../data/scoreData';
-import {saveQuestion} from '../data/questionData';
+import {getPositions} from '../data/positionData';
 
 function PlayContent(props) {
-  const {whitespaces, total_letters, questions, forceUpdate} = props;
-  const letters_x = Math.round((2*total_letters)**0.5);
+  const {forceUpdate} = props;
   const [initialTime, setInitialTime] = useState(new Date());
   const [totalTime, setTotalTime] = useState(0);
-  const [word, setWord] = useState('');
-  const [sol, setSol, refSol] = useState(0);
   const [answer, setAnswer] = useState('');
   const [counterQuestions, setCounterQuestions] = useState(0);
   const [corrects, setCorrects, refCorrects] = useState(0);
-  const [char, setChar] = useState('');
+  const [listQuestions, setListQuestions, refListQuestions] = useState([]);
+  const [totalPieces, setTotalPieces, refTotalPieces] = useState(0);
+  const [currentQuestion, setCurrentQuestion, refCurrentQuestion] = useState(0);
+  const [sol, setSol] = useState(-1);
   const [messageAnswer, setMessageAnswer] = useState('');
   const [playingGame, setPlayingGame, refPlayingGame] = useState(1);
   const [position, setPosition, refPosition] = useState(null);
@@ -24,25 +22,27 @@ function PlayContent(props) {
   const [cells, setCells, refCells] = useState([]);
   const [pieces, setPieces, refPieces] = useState({
     "bp": "/assets/black-pawn.svg",
-    "bn": "/assets/black-kinght.svg",
+    "bn": "/assets/black-knight.svg",
     "bb": "/assets/black-bishop.svg",
     "br": "/assets/black-rook.svg",
     "bq": "/assets/black-queen.svg",
     "bk": "/assets/black-king.svg",
     "wp": "/assets/white-pawn.svg",
-    "wn": "/assets/white-kinght.svg",
+    "wn": "/assets/white-knight.svg",
     "wb": "/assets/white-bishop.svg",
     "wr": "/assets/white-rook.svg",
     "wq": "/assets/white-queen.svg",
     "wk": "/assets/white-king.svg",
+    "": ""
   });
+  const levels=["noob", "easy", "hard", "professional"]
 
   const createBoardRefs = ()=>{
     let tempCells=[];
     for(let i=0; i<8;i++){
       tempCells.push([]);
       for(let j=0; j<8;j++){
-        tempCells[i].push(createRef());
+        tempCells[i].push({piece:"", classes:""});
       }
     }
     setCells(tempCells);
@@ -57,60 +57,62 @@ function PlayContent(props) {
     setTimeout(updateCurrentTime, 1000);
   };
   
-  const question = ()=>{
-    inputRef.current?.focus();
-    setCounterQuestions(counterQuestions+1);
-    let alphabet= ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-    let subAlphabet =[];
-    let nWord='';
-    [...Array(5).keys()].forEach(()=>{
-      let numb = Math.round(Math.random()*(alphabet.length-1));
-      subAlphabet.push(alphabet[numb]);
-      alphabet.splice(numb,1);
-    });
-    setChar(subAlphabet[0]);
-    [...Array(total_letters).keys()].forEach((j)=>{
-      if((j+1)%letters_x==1) nWord+="<span>";
-      let numb = Math.round(Math.random()*4);
-      if(numb===0) setSol(refSol.current+1);
-      nWord+=subAlphabet[numb];
-      for(let k=0;k<whitespaces;k++) nWord+=" ";
-      if((j+1)%letters_x==0){
-        nWord+="</span>";
-        if(j+1<total_letters) for(let k=0;k<whitespaces;k++) nWord+="<br/>";
-      }
-      setWord(nWord);
-    });
+  const getQuestions = async ()=>{
+    const questions = await getPositions();
+    setListQuestions(questions);
   };
 
   const nextQuestion = async ()=>{
-    if(isNaN(parseInt(answer))) return;
-    if(answer===""+sol){
-      setCorrects(refCorrects.current+1);
-      setMessageAnswer("correct answer");
+    const rows = refListQuestions.current[refCurrentQuestion.current].board.split("*");
+    const piecesToAdd = [];
+    rows.forEach((row)=> piecesToAdd.push(row.split(",")))
+    let tempCells = [];
+    for(let i=0; i<8;i++){
+      tempCells.push([]);
+      for(let j=0; j<8;j++){
+        const classes = defineCellClasses(i, j);
+        tempCells[i].push({piece:piecesToAdd[i][j], classes:classes});
+      }
     }
-    else{
-      setMessageAnswer(`Incorrect, the solution was ${sol}`);
-    }
-    await saveQuestion(char, answer===""+sol);
-    if(counterQuestions===questions){
-      setPlayingGame(0);
-      const newScore = await saveScore(totalTime, refCorrects.current);
-      const nPosition = await showPosition(newScore.id);
-      setPosition(nPosition[0].num);
-      divRef.current?.focus();
-      return;
-    }
-    setSol(0);
-    setAnswer('');
-    question();
+    setCells(tempCells);
+    setCurrentQuestion(refCurrentQuestion.current+1);
   };
 
-  useEffect(()=>{
+  const defineCellClasses= (i, j)=>{
+    const question = refListQuestions.current[refCurrentQuestion.current];
+    const last_move_info = question.last_move.split(",");
+    if(i==0 && j==0 && question.black_long_castling){
+      return "castling-cell";
+    }
+    else if(i==0 && j==7 && question.black_short_castling){
+      return "castling-cell";
+    }
+    else if(i==7 && j==0 && question.white_long_castling){
+      return "castling-cell";
+    }
+    else if(i==7 && j==7 && question.white_short_castling){
+      return "castling-cell";
+    }
+    else if(i==last_move_info[1] && j==last_move_info[2]){
+      return "last-move-cell";
+    }
+    else if(i==last_move_info[4] && j==last_move_info[5]){
+      return "last-move-cell";
+    }
+    else if((i+j)%2==0){
+      return "white-cell";
+    }
+    return "black-cell";
+  };
+
+  useEffect(async ()=>{
     const abortController = new AbortController();
     createBoardRefs();
-    question();
+    await getQuestions();
+    setTotalPieces(refListQuestions.current[0].board.split("*").join("").split(",").reduce((counter, obj) => obj !== '' ? counter += 1 : counter, 0));
+    nextQuestion();
     updateCurrentTime();
+    setCounterQuestions(1);
     return function cleanup() {
       abortController.abort();
     };
@@ -120,22 +122,21 @@ function PlayContent(props) {
     if(refPlayingGame.current===1){
       return (
         <>
-        <h4>Total questions: {questions}, whitespaces: {whitespaces}, letters: {total_letters}</h4>
+        <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.floor(Math.log2(totalPieces-1))]}</h4>
           <h4>Total time: {totalTime}</h4>
-          <h4>total corrects: {refCorrects.current}/{counterQuestions-1}</h4>
-          <h4>How many?: {char}</h4>
+          <h4>total corrects: {refCorrects.current}/{counterQuestions}</h4>
           <div className="board">
             {
               refCells.current.map(
-                (row, rowId)=>{
+                (row)=>{
                   return(
                     <div className="rowBoard">
                       {
                         row.map(
-                          (cell, columnId)=>{
+                          (cell)=>{
                             return(
-                              <div className={'cell-properties '+((rowId+columnId)%2==0 ? 'white-cell' : 'black-cell')} ref={cell}>
-                                <img className="pieceImage" src={pieces["br"]} />
+                              <div className={"cell-properties "+cell.classes}>
+                                <img className="pieceImage" src={pieces[cell.piece]} height="40px" width="40px" className={cell.piece==="" ? "invisible" : ""} />
                               </div>
                             )
                           }
@@ -148,7 +149,6 @@ function PlayContent(props) {
             }
           </div>
           <div>
-            <pre dangerouslySetInnerHTML={{ __html: word }}></pre>
           </div>
           <div className="messageHeight">{messageAnswer}</div>
           <div className="form-group play-form">
@@ -160,11 +160,11 @@ function PlayContent(props) {
     }
     return (
       <div tabindex="0" onKeyPress={(e)=>{if (e.charCode === 13) forceUpdate()}} ref={divRef}>
-      <h4>Final time: {totalTime}</h4>
+      {/* <h4>Final time: {totalTime}</h4>
       <h4>Final corrects: {refCorrects.current}/{counterQuestions}</h4>
-      <h4>Final score: {totalTime*(2**(questions-refCorrects.current))}</h4>
+      <h4>Final score: {totalTime*(2**(listQuestions.length-refCorrects.current))}</h4>
       <h4>Position: {refPosition.current}</h4>
-      <button className='btn btn-dark' onClick={forceUpdate}>Play again</button>
+      <button className='btn btn-dark' onClick={forceUpdate}>Play again</button> */}
       </div>
     );
   };
@@ -175,25 +175,13 @@ function PlayContent(props) {
       </div>
     );
   }
-
-  const mapStateToProps = state => ({
-    whitespaces: state.config.whitespaces,
-    total_letters: state.config.total_letters,
-    questions: state.config.questions,
-    });
   
     PlayContent.propTypes = {
-    whitespaces: PropTypes.number,
-    total_letters: PropTypes.number,
-    questions: PropTypes.number,
     forceUpdate: PropTypes.func,
   };
   
   PlayContent.defaultProps = {
-    whitespaces: 0,
-    total_letters: 0,
-    questions: 0,
     forceUpdate: null,
   };
   
-  export default connect(mapStateToProps)(PlayContent);
+  export default PlayContent;

@@ -60,7 +60,7 @@ function Settings(props) {
                       levels.map(
                         (level)=>(
                           <option key={nanoid()} value={level.id}>{level.difficultyName}</option>
-                      )
+                        )
                       )
                     }
           </select>

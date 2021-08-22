@@ -142,6 +142,14 @@
   background-color: brown;
 }
 
+.castling-cell{
+  background-color: #A18BF0;
+}
+
+.last-move-cell{
+  background-color: #27B34F;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
