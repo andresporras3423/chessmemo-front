@@ -8,7 +8,6 @@ function PlayContent(props) {
   const [initialTime, setInitialTime] = useState(new Date());
   const [totalTime, setTotalTime] = useState(0);
   const [answer, setAnswer] = useState('');
-  const [counterQuestions, setCounterQuestions] = useState(0);
   const [corrects, setCorrects, refCorrects] = useState(0);
   const [listQuestions, setListQuestions, refListQuestions] = useState([]);
   const [totalPieces, setTotalPieces, refTotalPieces] = useState(0);
@@ -75,7 +74,14 @@ function PlayContent(props) {
       }
     }
     setCells(tempCells);
+  };
+
+  const giveAnswer = ()=>{
+    if(parseInt(answer)===refListQuestions.current[refCurrentQuestion.current].available_moves){
+      setCorrects(refCorrects.current+1);
+    }
     setCurrentQuestion(refCurrentQuestion.current+1);
+    nextQuestion();
   };
 
   const defineCellClasses= (i, j)=>{
@@ -112,7 +118,6 @@ function PlayContent(props) {
     setTotalPieces(refListQuestions.current[0].board.split("*").join("").split(",").reduce((counter, obj) => obj !== '' ? counter += 1 : counter, 0));
     nextQuestion();
     updateCurrentTime();
-    setCounterQuestions(1);
     return function cleanup() {
       abortController.abort();
     };
@@ -124,7 +129,7 @@ function PlayContent(props) {
         <>
         <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.ceil(Math.log2(totalPieces))-2]}</h4>
           <h4>Total time: {totalTime}</h4>
-          <h4>total corrects: {refCorrects.current}/{counterQuestions}</h4>
+          <h4>total corrects: {refCorrects.current}/{currentQuestion+1}</h4>
           <div className="board">
             {
               refCells.current.map(
@@ -152,8 +157,8 @@ function PlayContent(props) {
           </div>
           <div className="messageHeight">{messageAnswer}</div>
           <div className="form-group play-form">
-            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) nextQuestion()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)}></input>
-            <button className='btn btn-dark' onClick={nextQuestion}>submit</button>
+            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) giveAnswer()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)}></input>
+            <button className='btn btn-dark' onClick={giveAnswer}>submit</button>
           </div>
         </>
       )
