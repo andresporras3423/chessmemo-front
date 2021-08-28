@@ -62,6 +62,10 @@ function PlayContent(props) {
   };
 
   const nextQuestion = async ()=>{
+    if(refCurrentQuestion.current===refListQuestions.current.length){
+      divRef.current?.focus();
+      return;
+    }
     const rows = refListQuestions.current[refCurrentQuestion.current].board.split("*");
     const piecesToAdd = [];
     rows.forEach((row)=> piecesToAdd.push(row.split(",")))
@@ -80,8 +84,10 @@ function PlayContent(props) {
     if(parseInt(answer)===refListQuestions.current[refCurrentQuestion.current].available_moves){
       setCorrects(refCorrects.current+1);
     }
+    setAnswer("");
     setCurrentQuestion(refCurrentQuestion.current+1);
     nextQuestion();
+    inputRef.current?.focus();
   };
 
   const defineCellClasses= (i, j)=>{
@@ -117,6 +123,7 @@ function PlayContent(props) {
     await getQuestions();
     setTotalPieces(refListQuestions.current[0].board.split("*").join("").split(",").reduce((counter, obj) => obj !== '' ? counter += 1 : counter, 0));
     nextQuestion();
+    inputRef.current?.focus();
     updateCurrentTime();
     return function cleanup() {
       abortController.abort();
@@ -129,7 +136,7 @@ function PlayContent(props) {
         <>
         <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.ceil(Math.log2(totalPieces))-2]}</h4>
           <h4>Total time: {totalTime}</h4>
-          <h4>total corrects: {refCorrects.current}/{currentQuestion+1}</h4>
+          <h4>total corrects: {refCorrects.current}/{currentQuestion}</h4>
           <div className="board">
             {
               refCells.current.map(
@@ -165,11 +172,9 @@ function PlayContent(props) {
     }
     return (
       <div tabindex="0" onKeyPress={(e)=>{if (e.charCode === 13) forceUpdate()}} ref={divRef}>
-      {/* <h4>Final time: {totalTime}</h4>
-      <h4>Final corrects: {refCorrects.current}/{counterQuestions}</h4>
-      <h4>Final score: {totalTime*(2**(listQuestions.length-refCorrects.current))}</h4>
-      <h4>Position: {refPosition.current}</h4>
-      <button className='btn btn-dark' onClick={forceUpdate}>Play again</button> */}
+      <h4>Final time: {totalTime}</h4>
+      <h4>Final corrects: {refCorrects.current}/{refListQuestions.current.length}</h4>
+      <button className='btn btn-dark' onClick={forceUpdate}>Play again</button>
       </div>
     );
   };
