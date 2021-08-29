@@ -63,6 +63,7 @@ function PlayContent(props) {
 
   const nextQuestion = async ()=>{
     if(refCurrentQuestion.current===refListQuestions.current.length){
+      setPlayingGame(0);
       divRef.current?.focus();
       return;
     }
@@ -83,6 +84,10 @@ function PlayContent(props) {
   const giveAnswer = ()=>{
     if(parseInt(answer)===refListQuestions.current[refCurrentQuestion.current].available_moves){
       setCorrects(refCorrects.current+1);
+      setMessageAnswer("correct answer");
+    }
+    else{
+      setMessageAnswer(`Incorrect, the solution was ${refListQuestions.current[refCurrentQuestion.current].available_moves}`);
     }
     setAnswer("");
     setCurrentQuestion(refCurrentQuestion.current+1);
