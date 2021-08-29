@@ -16,5 +16,6 @@ export const getPositions = async () => {
         await response;
         return message;
   };
+
   
   export default {getPositions}

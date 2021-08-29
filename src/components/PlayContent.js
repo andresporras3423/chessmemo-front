@@ -2,6 +2,7 @@ import {useEffect, useRef, createRef} from 'react';
 import useState from 'react-usestateref';
 import PropTypes from 'prop-types';
 import {getPositions} from '../data/positionData';
+import {saveScore} from '../data/scoreData';
 
 function PlayContent(props) {
   const {forceUpdate} = props;
@@ -19,6 +20,8 @@ function PlayContent(props) {
   const inputRef = useRef(null);
   const divRef = useRef(null);
   const [cells, setCells, refCells] = useState([]);
+  const [ranking, setRanking] = useState(-1);
+  const [personalRanking, setPersonalRanking] = useState(-1);
   const [pieces, setPieces, refPieces] = useState({
     "bp": "/assets/black-pawn.svg",
     "bn": "/assets/black-knight.svg",
@@ -61,9 +64,20 @@ function PlayContent(props) {
     setListQuestions(questions);
   };
 
+  const saveNewScore = async ()=>{
+    const nDifficultyId = Math.ceil(Math.log2(totalPieces))-2;
+    const nQuestions = refListQuestions.current.length;
+    const nCorrects = refCorrects.current;
+    const nSeconds = totalTime;
+    const scores= await saveScore(nDifficultyId, nQuestions, nCorrects, nSeconds);
+    setRanking(scores.ranking);
+    setPersonalRanking(scores.personalRanking);
+  };
+
   const nextQuestion = async ()=>{
     if(refCurrentQuestion.current===refListQuestions.current.length){
       setPlayingGame(0);
+      await saveNewScore();
       divRef.current?.focus();
       return;
     }
@@ -179,6 +193,8 @@ function PlayContent(props) {
       <div tabindex="0" onKeyPress={(e)=>{if (e.charCode === 13) forceUpdate()}} ref={divRef}>
       <h4>Final time: {totalTime}</h4>
       <h4>Final corrects: {refCorrects.current}/{refListQuestions.current.length}</h4>
+      <h4>Ranking: {ranking}</h4>
+      <h4>Personal ranking: {personalRanking}</h4>
       <button className='btn btn-dark' onClick={forceUpdate}>Play again</button>
       </div>
     );

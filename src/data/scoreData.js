@@ -24,18 +24,21 @@ export const getScoreRecents = async (signal) => {
       return data;
   };
 
-  export const saveScore = async (seconds, corrects) => {
-    const response = await fetch(`https://lit-shelf-55398.herokuapp.com/score/save`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({seconds: seconds, corrects: corrects})
-      });
-      const data = await response.json();
-      return data;
+  export const saveScore = async (nDifficultyId, nQuestions, nCorrects, nSeconds) => {
+    const response = await fetch(`https://localhost:44311/api/score`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'id': localStorage.getItem('id'),
+            'token': localStorage.getItem('token'),
+          },
+          body: JSON.stringify({nDifficultyId, nQuestions, nCorrects, nSeconds}),
+        });
+        const data = await response.json();
+        return data;
   };
+  
 
   export const showPosition = async (id) => {
     const response = await fetch(`https://lit-shelf-55398.herokuapp.com/score/show_position?id=${id}`, {
