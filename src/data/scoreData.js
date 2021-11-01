@@ -24,16 +24,15 @@ export const getScoreRecents = async (signal) => {
       return data;
   };
 
-  export const saveScore = async (nDifficultyId, nQuestions, nCorrects, nSeconds) => {
-    const response = await fetch(`https://localhost:44311/api/score`, {
+  export const saveScore = async (difficulty_id, questions, corrects, seconds) => {
+    const response = await fetch(`http://localhost:3000/score/create`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            'id': localStorage.getItem('id'),
             'token': localStorage.getItem('token'),
           },
-          body: JSON.stringify({nDifficultyId, nQuestions, nCorrects, nSeconds}),
+          body: JSON.stringify({difficulty_id, questions, corrects, seconds}),
         });
         const data = await response.json();
         return data;

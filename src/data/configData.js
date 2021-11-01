@@ -1,10 +1,9 @@
 export const getConfigData = async () => {
-  const response = await fetch(`https://localhost:44311/api/config/`, {
+  const response = await fetch(`http://localhost:3000/config/get`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'id': localStorage.getItem('id'),
         'token': localStorage.getItem('token'),
       },
     });
@@ -12,16 +11,15 @@ export const getConfigData = async () => {
     return data;
 };
 
-export const updateConfigData = async (DifficultyId, questions) => {
-  const response = await fetch(`https://localhost:44311/api/config/`, {
+export const updateConfigData = async (difficulty_id, questions) => {
+  const response = await fetch(`http://localhost:3000/config/put`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'id': localStorage.getItem('id'),
         'token': localStorage.getItem('token'),
       },
-      body: JSON.stringify({Questions: questions, DifficultyId: DifficultyId})
+      body: JSON.stringify({questions: questions, difficulty_id: difficulty_id})
     });
     const data = await response;
     return data;

@@ -1,6 +1,6 @@
 export const createPlayer = async (email, password) => {
     let message="";  
-    const response = await fetch(`https://localhost:44311/api/player`, {
+    const response = await fetch(`http://localhost:3000/player/create`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',

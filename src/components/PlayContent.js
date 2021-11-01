@@ -81,7 +81,7 @@ function PlayContent(props) {
       divRef.current?.focus();
       return;
     }
-    const rows = refListQuestions.current[refCurrentQuestion.current].board.split("*");
+    const rows = refListQuestions.current[refCurrentQuestion.current].pieces_position.split("*");
     const piecesToAdd = [];
     rows.forEach((row)=> piecesToAdd.push(row.split(",")))
     let tempCells = [];
@@ -96,12 +96,12 @@ function PlayContent(props) {
   };
 
   const giveAnswer = ()=>{
-    if(parseInt(answer)===refListQuestions.current[refCurrentQuestion.current].available_moves){
+    if(parseInt(answer)===refListQuestions.current[refCurrentQuestion.current].movements_available){
       setCorrects(refCorrects.current+1);
       setMessageAnswer("correct answer");
     }
     else{
-      setMessageAnswer(`Incorrect, the solution was ${refListQuestions.current[refCurrentQuestion.current].available_moves}`);
+      setMessageAnswer(`Incorrect, the solution was ${refListQuestions.current[refCurrentQuestion.current].movements_available}`);
     }
     setAnswer("");
     setCurrentQuestion(refCurrentQuestion.current+1);
@@ -111,7 +111,7 @@ function PlayContent(props) {
 
   const defineCellClasses= (i, j)=>{
     const question = refListQuestions.current[refCurrentQuestion.current];
-    const last_move_info = question.last_move.split(",");
+    const last_move_info = question.last_movement.split(",");
     if(i==0 && j==0 && question.black_long_castling){
       return "castling-cell";
     }
@@ -140,7 +140,7 @@ function PlayContent(props) {
     const abortController = new AbortController();
     createBoardRefs();
     await getQuestions();
-    setTotalPieces(refListQuestions.current[0].board.split("*").join("").split(",").reduce((counter, obj) => obj !== '' ? counter += 1 : counter, 0));
+    setTotalPieces(refListQuestions.current[0].pieces_position.split("*").join("").split(",").reduce((counter, obj) => obj !== '' ? counter += 1 : counter, 0));
     nextQuestion();
     inputRef.current?.focus();
     updateCurrentTime();

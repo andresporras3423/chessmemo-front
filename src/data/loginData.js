@@ -1,6 +1,6 @@
 export const createLogin = async (email, password) => {
     let dataResponse="";
-    const response = await fetch(`https://localhost:44311/api/login`, {
+    const response = await fetch(`http://localhost:3000/login/create`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -12,24 +12,19 @@ export const createLogin = async (email, password) => {
           return  data.json();
             })
             .then((loginData)=>{
-              let listData = loginData.split(",");
-              if(listData.length==2){
-                localStorage.setItem('id', listData[0]);
-                localStorage.setItem('token', listData[1]);
-              }
-              dataResponse=listData[0];
+              localStorage.setItem('token', loginData["token"]);
+              dataResponse="ok";
             });
             await response;
             return dataResponse;
   };
 
   export const destroyLogin = async (email, password) => {
-    const response = await fetch(`https://localhost:44311/api/login`, {
+    const response = await fetch(`http://localhost:3000/login/destroy`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'id': localStorage.getItem('id'),
           'token': localStorage.getItem('token'),
         },
       });
@@ -38,12 +33,11 @@ export const createLogin = async (email, password) => {
   };
 
   export const getLogin = async () => {
-    const response = await fetch(`https://localhost:44311/api/login`, {
+    const response = await fetch(`http://localhost:3000/login/get`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'id': localStorage.getItem('id'),
           'token': localStorage.getItem('token')
         },
       });

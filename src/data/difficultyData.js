@@ -1,10 +1,9 @@
 export const getDifficultyData = async () => {
-    const response = await fetch(`https://localhost:44311/api/difficulty/`, {
+    const response = await fetch(`http://localhost:3000/difficulty/get`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'id': localStorage.getItem('id'),
           'token': localStorage.getItem('token'),
         },
       });

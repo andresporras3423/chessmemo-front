@@ -1,11 +1,10 @@
 export const getPositions = async () => {
     let message="";  
-    const response = await fetch(`https://localhost:44311/api/position`, {
+    const response = await fetch(`http://localhost:3000/position/get`, {
           method: 'GET',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            'id': localStorage.getItem('id'),
             'token': localStorage.getItem('token'),
           },
         }).then((data)=>{
