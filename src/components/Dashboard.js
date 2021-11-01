@@ -26,7 +26,7 @@ useEffect(() => {
       else{
         const data = await getConfigData();
           handleGetConfig({
-            'DifficultyId': data['DifficultyId'],
+            'DifficultyId': data['difficulty_id'],
             'questions': data['questions'],
           });
           setLogged(true);
