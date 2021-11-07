@@ -70,8 +70,8 @@ function PlayContent(props) {
     const nCorrects = refCorrects.current;
     const nSeconds = totalTime;
     const scores= await saveScore(nDifficultyId, nQuestions, nCorrects, nSeconds);
-    setRanking(scores.ranking);
-    setPersonalRanking(scores.personalRanking);
+    setRanking(scores.global_position);
+    setPersonalRanking(scores.personal_position);
   };
 
   const nextQuestion = async ()=>{
