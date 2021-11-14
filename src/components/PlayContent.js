@@ -20,6 +20,7 @@ function PlayContent(props) {
   const inputRef = useRef(null);
   const divRef = useRef(null);
   const [cells, setCells, refCells] = useState([]);
+  const [level, setLevel, refLevel] = useState([]);
   const [ranking, setRanking] = useState(-1);
   const [personalRanking, setPersonalRanking] = useState(-1);
   const [pieces, setPieces, refPieces] = useState({
@@ -37,7 +38,6 @@ function PlayContent(props) {
     "wk": "/assets/white-king.svg",
     "": ""
   });
-  const levels=["noob", "easy", "hard", "professional"]
 
   const createBoardRefs = ()=>{
     let tempCells=[];
@@ -60,8 +60,9 @@ function PlayContent(props) {
   };
   
   const getQuestions = async ()=>{
-    const questions = await getPositions();
-    setListQuestions(questions);
+    const questions_and_level = await getPositions();
+    setListQuestions(questions_and_level["positions"]);
+    setLevel(questions_and_level["difficulty_id"]);
   };
 
   const saveNewScore = async ()=>{
@@ -153,7 +154,7 @@ function PlayContent(props) {
     if(refPlayingGame.current===1){
       return (
         <>
-        <h4>Total questions: {refListQuestions.current.length}, level: {levels[Math.ceil(Math.log2(totalPieces))-2]}</h4>
+        <h4>Total questions: {refListQuestions.current.length}, level: {level}</h4>
           <h4>Total time: {totalTime}</h4>
           <h4>total corrects: {refCorrects.current}/{currentQuestion}</h4>
           <div className="board">
