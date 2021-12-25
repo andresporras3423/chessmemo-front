@@ -25,11 +25,9 @@ function Navbar(props) {
       <button className="subnavbtn">Game feedback <i className="fa fa-caret-down"></i></button>
       <div className="subnav-content">
       <button onClick={()=>setPage('3')}>Best personal</button>
-      <button onClick={()=>setPage('4')}>Recent scores</button>
-      <button onClick={()=>setPage('5')}>Most errors</button>
-      <button onClick={()=>setPage('6')}>Most corrects</button>
-      <button onClick={()=>setPage('7')}>Recent errors</button>
-      <button onClick={()=>setPage('8')}>Recent corrects</button>
+      <button onClick={()=>setPage('4')}>Best global</button>
+      <button onClick={()=>setPage('5')}>Recent config</button>
+      <button onClick={()=>setPage('6')}>Recent personal</button>
     </div> 
     </div>
     <div className="subnav">

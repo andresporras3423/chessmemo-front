@@ -9,17 +9,13 @@ function Feedback(props) {
 
   const printTitle=()=>{
     if(option==='3') return (<h3>show top scores for current config</h3>);
-    else if(option==='4') return (<h3>show recent scores for current config</h3>);
-    else if(option==='5') return (<h3>show most errors for current config</h3>);
-    else if(option==='6') return (<h3>show most corrects for current config</h3>);
-    else if(option==='7') return (<h3>show recent errors for current config</h3>);
-    else return (<h3>show recent corrects for current config</h3>);
+    else if(option==='4') return (<h3>show top score all players</h3>);
+    else if(option==='5') return (<h3>show recent personal for current config</h3>);
+    else if(option==='6') return (<h3>show recent personal for all configs</h3>);
   };
 
   const printTable = ()=>{
-    if(option==='3' || option==='4') return (<ScoreInfo option={option} key={nanoid()} /> );
-    else if(option==='5' || option==='6') return (<TopQuestions option={option} key={nanoid()} /> );
-    else return (<RecentQuestions option={option} key={nanoid()} /> );
+    return (<ScoreInfo option={option} key={nanoid()} /> );
   }
   
   return (

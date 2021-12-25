@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getScoreRecents, getBestPersonal} from '../data/scoreData';
+import {getBestPersonal, getBestGlobal, getRecentConfig, getRecentPersonal} from '../data/scoreData';
 function ScoreInfo(props) {
     const {option, key} = props;
     const [listData, setListData] = useState([]);
@@ -9,7 +9,9 @@ function ScoreInfo(props) {
     const { signal } = abortController;
     let data=[];
     if(option==='3')  data = await getBestPersonal(signal); 
-    else if(option==='4') data = await getScoreRecents(signal);
+    else if(option==='4') data = await getBestGlobal(signal);
+    else if(option==='5') data = await getRecentConfig(signal);
+    else if(option==='6') data = await getRecentPersonal(signal);
     console.log(data);
     setListData(data);
     return function cleanup() {
