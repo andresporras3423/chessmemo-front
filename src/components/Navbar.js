@@ -24,7 +24,7 @@ function Navbar(props) {
     <div className="subnav">
       <button className="subnavbtn">Game feedback <i className="fa fa-caret-down"></i></button>
       <div className="subnav-content">
-      <button onClick={()=>setPage('3')}>Top scores</button>
+      <button onClick={()=>setPage('3')}>Best personal</button>
       <button onClick={()=>setPage('4')}>Recent scores</button>
       <button onClick={()=>setPage('5')}>Most errors</button>
       <button onClick={()=>setPage('6')}>Most corrects</button>

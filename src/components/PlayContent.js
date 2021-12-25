@@ -66,11 +66,9 @@ function PlayContent(props) {
   };
 
   const saveNewScore = async ()=>{
-    const nDifficultyId = Math.ceil(Math.log2(totalPieces))-2;
-    const nQuestions = refListQuestions.current.length;
     const nCorrects = refCorrects.current;
     const nSeconds = totalTime;
-    const scores= await saveScore(nDifficultyId, nQuestions, nCorrects, nSeconds);
+    const scores= await saveScore(nCorrects, nSeconds);
     setRanking(scores.global_position);
     setPersonalRanking(scores.personal_position);
   };

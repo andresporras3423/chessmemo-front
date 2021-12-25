@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getScoreRecents, getScoreTop} from '../data/scoreData';
+import {getScoreRecents, getBestPersonal} from '../data/scoreData';
 function ScoreInfo(props) {
     const {option, key} = props;
     const [listData, setListData] = useState([]);
@@ -8,7 +8,7 @@ function ScoreInfo(props) {
     const abortController = new AbortController();
     const { signal } = abortController;
     let data=[];
-    if(option==='3')  data = await getScoreTop(signal); 
+    if(option==='3')  data = await getBestPersonal(signal); 
     else if(option==='4') data = await getScoreRecents(signal);
     console.log(data);
     setListData(data);
@@ -20,7 +20,6 @@ function ScoreInfo(props) {
         <table className="table tableContent">
         <thead className="thead-dark">
             <tr>
-                <th>Score</th>
                 <th>Corrects</th>
                 <th>Seconds</th>
                 <th>Date</th>
@@ -31,7 +30,6 @@ function ScoreInfo(props) {
                 listData.map(
                     (data)=>(
                         <tr>
-                            <td>{data.score}</td>
                             <td>{data.corrects} out of {data.questions}</td>
                             <td>{data.seconds}</td>
                             <td>{data.created_at}</td>
