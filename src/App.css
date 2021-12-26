@@ -178,8 +178,8 @@
 }
 
 .margin-div{
-  margin-left: 25px;
-  margin-right: 25px;
+  display: flex;
+  justify-content: center;
 }
 
 .messageHeight{
@@ -195,9 +195,8 @@
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 400px) {
   .margin-div {
-    margin-left: 0;
-    margin-right: 0;
+    display: inline;
   }
 }

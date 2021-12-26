@@ -1,6 +1,6 @@
 function Instructions() {
    return (
-     <div className='margin-div'>
+     <div>
        <h5>Welcome to my game</h5>
        <p>count letters game is self descriptive, count how many of the specified letter you can see in the matrix.</p>
        <p>In settings you can update whitespaces which is the space between rows and between columns. You can also modify the number of letters in the matrix and how many questions.</p>
