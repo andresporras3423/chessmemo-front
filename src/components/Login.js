@@ -38,7 +38,7 @@ function Login(props) {
 
     const startLogin = async ()=>{
       const response = await createLogin(email, password);
-        if(isNaN(response)) setStatusMessage(response);
+        if(response.status!=202) setStatusMessage(response.body.error);
         else {
           history.push('');
         }

@@ -1,5 +1,6 @@
 export const createLogin = async (email, password) => {
-    let dataResponse="";
+    let status="";
+    let body="";
     const response = await fetch(`http://localhost:3000/login/create`, {
         method: 'POST',
         headers: {
@@ -9,27 +10,20 @@ export const createLogin = async (email, password) => {
         body: JSON.stringify({email: email, password: password}),
       })
       .then((data)=>{
-          return  data.json();
+          debugger;
+          status=data.status;
+          return data.json();
             })
             .then((loginData)=>{
-              localStorage.setItem('token', loginData["token"]);
-              dataResponse="ok";
+              if(status===202)  localStorage.setItem('token', loginData["token"]);
+              body=loginData;
             });
             await response;
-            return dataResponse;
+            return {status, body};
   };
 
-  export const destroyLogin = async (email, password) => {
-    const response = await fetch(`http://localhost:3000/login/destroy`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'token': localStorage.getItem('token'),
-        },
-      });
-      const data = await response;
-      return data;
+  export const destroyLogin = async () => {
+    localStorage.removeItem('token');
   };
 
   export const getLogin = async () => {
