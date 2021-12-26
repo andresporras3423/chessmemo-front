@@ -179,6 +179,7 @@
 
 .margin-div{
   margin-left: 25px;
+  margin-right: 25px;
 }
 
 .messageHeight{
@@ -191,5 +192,12 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .margin-div {
+    margin-left: 0;
+    margin-right: 0;
   }
 }

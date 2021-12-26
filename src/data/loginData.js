@@ -10,7 +10,6 @@ export const createLogin = async (email, password) => {
         body: JSON.stringify({email: email, password: password}),
       })
       .then((data)=>{
-          debugger;
           status=data.status;
           return data.json();
             })
