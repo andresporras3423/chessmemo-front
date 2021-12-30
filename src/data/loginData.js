@@ -1,7 +1,7 @@
 export const createLogin = async (email, password) => {
     let status="";
     let body="";
-    const response = await fetch(`${process.env.REACT_APP_API}create`, {
+    const response = await fetch(`${process.env.REACT_APP_API}login/create`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
