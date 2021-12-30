@@ -53,10 +53,10 @@ function Login(props) {
       }
       else{
         const response = await createPlayer(email, password);
-        if(isNaN(response)){
-          setStatusMessage(response);
-        } 
-        else await startLogin();
+        if(response.status!=201) setStatusMessage(JSON. stringify(response.body));
+        else {
+           await startLogin();
+        }
       }
     };
   if(logged) return (<></>);
