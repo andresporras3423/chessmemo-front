@@ -1,5 +1,5 @@
 export const getDifficultyData = async () => {
-    const response = await fetch(`http://localhost:3000/difficulty/get`, {
+    const response = await fetch(`${process.env.REACT_APP_API}difficulty/get`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

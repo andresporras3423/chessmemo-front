@@ -1,6 +1,4 @@
 import ScoreInfo from './ScoreInfo';
-import TopQuestions from './TopQuestions';
-import RecentQuestions from './RecentQuestions';
 import { nanoid } from 'nanoid';
 
 function Feedback(props) {

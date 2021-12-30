@@ -1,5 +1,5 @@
 export const getBestPersonal = async (signal) => {
-  const response = await fetch(`http://localhost:3000/score/best_personal`, {
+  const response = await fetch(`${process.env.REACT_APP_API}score/best_personal`, {
       signal,
       method: 'GET',
       headers: {
@@ -13,7 +13,7 @@ export const getBestPersonal = async (signal) => {
 };
 
 export const getBestGlobal = async (signal) => {
-  const response = await fetch(`http://localhost:3000/score/best_global`, {
+  const response = await fetch(`${process.env.REACT_APP_API}score/best_global`, {
       signal,
       method: 'GET',
       headers: {
@@ -27,7 +27,7 @@ export const getBestGlobal = async (signal) => {
 };
 
 export const getRecentConfig = async (signal) => {
-  const response = await fetch(`http://localhost:3000/score/recent_config`, {
+  const response = await fetch(`${process.env.REACT_APP_API}score/recent_config`, {
       signal,
       method: 'GET',
       headers: {
@@ -41,7 +41,7 @@ export const getRecentConfig = async (signal) => {
 };
 
 export const getRecentPersonal = async (signal) => {
-  const response = await fetch(`http://localhost:3000/score/recent_personal`, {
+  const response = await fetch(`${process.env.REACT_APP_API}score/recent_personal`, {
       signal,
       method: 'GET',
       headers: {
@@ -55,7 +55,7 @@ export const getRecentPersonal = async (signal) => {
 };
 
   export const saveScore = async (corrects, seconds) => {
-    const response = await fetch(`http://localhost:3000/score/create`, {
+    const response = await fetch(`${process.env.REACT_APP_API}score/create`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',

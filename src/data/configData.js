@@ -1,5 +1,5 @@
 export const getConfigData = async () => {
-  const response = await fetch(`http://localhost:3000/config/get`, {
+  const response = await fetch(`${process.env.REACT_APP_API}config/get`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -12,7 +12,7 @@ export const getConfigData = async () => {
 };
 
 export const updateConfigData = async (difficulty_id, questions) => {
-  const response = await fetch(`http://localhost:3000/config/put`, {
+  const response = await fetch(`${process.env.REACT_APP_API}config/put`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',

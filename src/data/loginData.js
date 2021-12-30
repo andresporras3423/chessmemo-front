@@ -1,7 +1,7 @@
 export const createLogin = async (email, password) => {
     let status="";
     let body="";
-    const response = await fetch(`http://localhost:3000/login/create`, {
+    const response = await fetch(`${process.env.REACT_APP_API}create`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -26,7 +26,7 @@ export const createLogin = async (email, password) => {
   };
 
   export const getLogin = async () => {
-    const response = await fetch(`http://localhost:3000/login/get`, {
+    const response = await fetch(`${process.env.REACT_APP_API}login/get`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
