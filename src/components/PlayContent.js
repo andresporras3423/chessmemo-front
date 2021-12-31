@@ -177,14 +177,30 @@ function PlayContent(props) {
                 }
               )
             }
+            <div className="messageHeight">{messageAnswer}</div>
+            <div class="submit-buttons">
+            <div class="grid-buttons">
+              <input type="button" value="0" />
+              <input type="button" value="1" />
+              <input type="button" value="2" />
+              <input type="button" value="3" />
+              <input type="button" value="4" />
+              <input type="button" value="5" />
+              <input type="button" value="6" />
+              <input type="button" value="7" />
+            </div>
+            <div class="grid-submit">
+            <input type="button" value="8" />
+              <input type="button" value="9" />
+              <input type="button" value="<" />
+            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) giveAnswer()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)}></input>
+            <button className='btn btn-dark' onClick={giveAnswer}>send</button>
+            </div>
+            </div>
           </div>
           <div>
           </div>
-          <div className="messageHeight">{messageAnswer}</div>
-          <div className="form-group play-form">
-            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) giveAnswer()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)}></input>
-            <button className='btn btn-dark' onClick={giveAnswer}>submit</button>
-          </div>
+          
         </>
       )
     }

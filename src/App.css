@@ -111,6 +111,10 @@
   margin-bottom: 5px;
 }
 
+.board{
+  display: inline;
+}
+
 .rowBoard{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -178,13 +182,38 @@
 }
 
 .margin-div{
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
 }
 
 .messageHeight{
   min-height: 25px;
 }
+
+.submit-buttons{
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.grid-buttons{
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.grid-buttons > * {
+  margin: 5px;
+}
+
+.grid-submit{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 3fr 2fr;
+}
+
+.grid-submit > * {
+  margin: 5px;
+}
+
 
 @keyframes App-logo-spin {
   from {
@@ -197,6 +226,7 @@
 
 @media only screen and (max-width: 400px) {
   .margin-div {
-    display: inline;
+    /* display: inline; */
   }
+
 }
