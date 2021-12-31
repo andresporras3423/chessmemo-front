@@ -152,10 +152,11 @@ function PlayContent(props) {
     if(refPlayingGame.current===1){
       return (
         <>
-        <h4>Total questions: {refListQuestions.current.length}, level: {level}</h4>
+          <div className="board">
+          <h4>Total questions: {refListQuestions.current.length}</h4>
+          <h4>level: {level}</h4>
           <h4>Total time: {totalTime}</h4>
           <h4>total corrects: {refCorrects.current}/{currentQuestion}</h4>
-          <div className="board">
             {
               refCells.current.map(
                 (row)=>{
@@ -180,20 +181,20 @@ function PlayContent(props) {
             <div className="messageHeight">{messageAnswer}</div>
             <div class="submit-buttons">
             <div class="grid-buttons">
-              <input type="button" value="0" />
-              <input type="button" value="1" />
-              <input type="button" value="2" />
-              <input type="button" value="3" />
-              <input type="button" value="4" />
-              <input type="button" value="5" />
-              <input type="button" value="6" />
-              <input type="button" value="7" />
+              <input type="button" value="0" onClick={()=>setAnswer(answer+'0')} />
+              <input type="button" value="1" onClick={()=>setAnswer(answer+'1')}/>
+              <input type="button" value="2" onClick={()=>setAnswer(answer+'2')}/>
+              <input type="button" value="3" onClick={()=>setAnswer(answer+'3')}/>
+              <input type="button" value="4" onClick={()=>setAnswer(answer+'4')}/>
+              <input type="button" value="5" onClick={()=>setAnswer(answer+'5')}/>
+              <input type="button" value="6" onClick={()=>setAnswer(answer+'6')}/>
+              <input type="button" value="7" onClick={()=>setAnswer(answer+'7')}/>
             </div>
             <div class="grid-submit">
-            <input type="button" value="8" />
-              <input type="button" value="9" />
-              <input type="button" value="<" />
-            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) giveAnswer()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)}></input>
+            <input type="button" value="8" onClick={()=>setAnswer(answer+'8')}/>
+              <input type="button" value="9" onClick={()=>setAnswer(answer+'9')}/>
+              <input type="button" value="<" onClick={()=>setAnswer(answer.length==0 ? answer : answer.slice(0,-1))}/>
+            <input className='form-control' onKeyPress={(e)=>{if (e.charCode === 13) giveAnswer()}} ref={inputRef} type="number" value={answer} onChange={(el)=>setAnswer(el.target.value)} disabled></input>
             <button className='btn btn-dark' onClick={giveAnswer}>send</button>
             </div>
             </div>

@@ -112,7 +112,8 @@
 }
 
 .board{
-  display: inline;
+  display: grid;
+  justify-content: center;
 }
 
 .rowBoard{
@@ -192,6 +193,7 @@
 }
 
 .submit-buttons{
+  width: 400px;
   display: grid;
   grid-template-columns: 1fr;
 }
@@ -225,8 +227,23 @@
 }
 
 @media only screen and (max-width: 400px) {
-  .margin-div {
-    /* display: inline; */
+  .rowBoard {
+    width: 320px;
+    height: 40px;
   }
 
+  .submit-buttons{
+    width: 320px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .rowBoard {
+    width: 280px;
+    height: 35px;
+  }
+
+  .submit-buttons{
+    width: 280px;
+  }
 }
