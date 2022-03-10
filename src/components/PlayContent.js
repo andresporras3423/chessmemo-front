@@ -167,7 +167,7 @@ function PlayContent(props) {
                           (cell)=>{
                             return(
                               <div className={"cell-properties "+cell.classes}>
-                                <img className="pieceImage" src={pieces[cell.piece]} height="40px" width="40px" className={cell.piece==="" ? "invisible" : ""} />
+                                <img src={pieces[cell.piece]} height="40px" width="40px" className={"pieceImage"+(cell.piece==="" ? "invisible" : "")} />
                               </div>
                             )
                           }
